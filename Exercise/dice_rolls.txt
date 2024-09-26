@@ -1,0 +1,8 @@
+-- 20 Simulated dice rolls -- 
+4 3 4 2 1 2 6 6 2 2 3 6 2 4 6 4 1 6 2 4
+
+-- The same 20 dice rolls but sorted -- 
+1 1 2 2 2 2 2 2 3 3 4 4 4 4 4 6 6 6 6 6
+
+-- How many fours did we get -- 
+4 4 4 4 4 = 5st

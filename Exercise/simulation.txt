@@ -1,0 +1,42 @@
+Antal kast: 10
+1: 1st - Probibility: 10.00%
+2: 1st - Probibility: 10.00%
+3: 2st - Probibility: 20.00%
+4: 1st - Probibility: 10.00%
+5: 3st - Probibility: 30.00%
+6: 2st - Probibility: 20.00%
+Antal kast: 100
+1: 19st - Probibility: 19.00%
+2: 16st - Probibility: 16.00%
+3: 17st - Probibility: 17.00%
+4: 14st - Probibility: 14.00%
+5: 18st - Probibility: 18.00%
+6: 16st - Probibility: 16.00%
+Antal kast: 1000
+1: 154st - Probibility: 15.40%
+2: 160st - Probibility: 16.00%
+3: 191st - Probibility: 19.10%
+4: 181st - Probibility: 18.10%
+5: 174st - Probibility: 17.40%
+6: 140st - Probibility: 14.00%
+Antal kast: 10000
+1: 1612st - Probibility: 16.12%
+2: 1675st - Probibility: 16.75%
+3: 1633st - Probibility: 16.33%
+4: 1720st - Probibility: 17.20%
+5: 1672st - Probibility: 16.72%
+6: 1688st - Probibility: 16.88%
+Antal kast: 100000
+1: 16699st - Probibility: 16.70%
+2: 16877st - Probibility: 16.88%
+3: 16641st - Probibility: 16.64%
+4: 16496st - Probibility: 16.50%
+5: 16739st - Probibility: 16.74%
+6: 16548st - Probibility: 16.55%
+Antal kast: 1000000
+1: 166275st - Probibility: 16.63%
+2: 166644st - Probibility: 16.66%
+3: 166673st - Probibility: 16.67%
+4: 166917st - Probibility: 16.69%
+5: 166624st - Probibility: 16.66%
+6: 166867st - Probibility: 16.69%
