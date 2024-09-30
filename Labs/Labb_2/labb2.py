@@ -1,12 +1,5 @@
 import numpy as np, matplotlib.pyplot as plt, math
 
-def distance_calc(data, test): # Spara distansen mellan test och data i en lista, returnera en lista.
-    distance = []
-    #print(distance)
-    for test in data:
-        for i in test:
-            distance = math.sqrt((data[0] - test[0])**2 + (data[1] - test[1])**2)
-    return distance
 
 pokemon = []
 with open("datapoints.txt") as file:
@@ -39,20 +32,15 @@ test = [[element.strip(",()") for element in i] for i in test] # Tar bort ', ' i
 test= [[float(element1) for element1 in i] for i in test]
 x2, y2 = zip(*test)
 
-plt.scatter(x, y, c="red")
-plt.scatter(x1, y1, c="green")
-plt.scatter(x2, y2, c="black")
-#plt.show()
+pokemon= [[float(element1) for element1 in i] for i in pokemon] # gör float av pokemon tidigare i koden
 
 
-pokemon= [[float(element1) for element1 in i] for i in pokemon] 
-
-
-def ecd(x, y):
+def ecd(x, y): # 
     distance = math.sqrt((x[0] - y[0])**2 + (x[1] - y[1])**2)
     return distance
 
-dist = [(ecd((a, b),(x,y)),c) for a,b in test for x, y, c in pokemon]
+
+dist = [(ecd((a, b),(x,y)),c) for a,b in test for x,y, c in pokemon] 
 
 
 
@@ -66,7 +54,7 @@ def pokemon_type(dist):
     
 
 label = pokemon_type(dist)
-print(test)
+
 
 for i, y in zip(range(len(label)), test):
     if label[i][1] == 1:
@@ -74,11 +62,86 @@ for i, y in zip(range(len(label)), test):
     else:
         print(f"Sample with (width, height): {y} classified as Pichu")
 
+      
+
+def user_input(pokemon):
+    pass
+    while True:
+        try:
+            x = float(input("Skriv en koordinat på X-axeln: "))
+            if 2 <= len(str(int(x))) <= 3:
+                y = float(input("Skriv en koordinat på Y-axeln: "))
+                if 2 <= len(str(int(y))) <= 3:
+                    user_coordinate = [x, y]
 
 
+                    distances = []
+                    for i in pokemon:
+                        distance = math.sqrt((i[0] - user_coordinate[0])**2 + (i[1] - user_coordinate[1])**2)
+                        distances.append((distance, i[2]))
+                    
+                    distances.sort()
+                    the_one_dist = distances[0]
+                   
+                    if the_one_dist[1] == 1:
+                        print(f"Sample with (width, height): {x, y} classified as Pikachu")
+                    else:
+                        print(f"Sample with (width, height): {x, y} classified as Pichu")
+                    
+                    break
+                else:
+                    raise ValueError("Y-koordinaten måste vara 2-3 siffror lång.")
+            else:
+               raise ValueError("X-koordinaten måste vara 2-3 siffror lång.")
+            
 
-# Rälna ut kortaste distansen med range mellan 1-150
-# dinsten mellan range 151-300 m.m
+        except Exception as e:
+            print("Ett fel inträffade:", e)
 
-# Skriv ut villken typ det är från test koordinaten x4.
+#user_coordinate = user_input(pokemon)
 
+def user_input_10near(pokemon):
+    while True:
+        try:
+            x = float(input("Skriv en koordinat på X-axeln: "))
+            if 2 <= len(str(int(x))) <= 3:
+                y = float(input("Skriv en koordinat på Y-axeln: "))
+                if 2 <= len(str(int(y))) <= 3:
+                    user_coordinate = [x, y]
+
+
+                    distances = []
+                    for i in pokemon:
+                        distance = math.sqrt((i[0] - user_coordinate[0])**2 + (i[1] - user_coordinate[1])**2)
+                        distances.append((distance, i[2]))
+                    
+                    distances.sort()
+                    pikachu = 0
+               
+                    for i in distances[:10]: # De 10 närmsta punkterna
+                        if i[1] == 1:
+                            pikachu += 1
+
+                    if pikachu >= 5:
+                        print(f"Sample with (width, height): {x, y} classified as Pikachu - 10 -")
+                    else:
+                        print(f"Sample with (width, height): {x, y} classified as Pichu - 10 -")
+                        return user_coordinate
+                    break
+                else:
+                    raise ValueError("Y-koordinaten måste vara 2-3 siffror lång.")
+            else:
+               raise ValueError("X-koordinaten måste vara 2-3 siffror lång.")
+            
+
+        except Exception as e:
+            print("Ett fel inträffade:", e)
+
+        
+user_coordinate_10near = user_input_10near(pokemon)
+
+plt.scatter(x, y, c="red")
+plt.scatter(x1, y1, c="green")
+#plt.scatter(x2, y2, c="black")
+plt.scatter(user_coordinate_10near[0], user_coordinate_10near[1], c="black")
+plt.show()
