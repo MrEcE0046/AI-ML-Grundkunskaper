@@ -16,7 +16,7 @@ picatchu = [i[:-1] for i in picatchu]
 pichu = [[float(element) for element in i] for i in pichu] #GPT - konverterar str till float
 picatchu = [[float(element) for element in i] for i in picatchu] # [23.43434, 21.43434]
 
-x, y = zip(*pichu) 
+x3, y3 = zip(*pichu) 
 x1, y1 = zip(*picatchu)
 
 test = []
@@ -31,6 +31,12 @@ test = [[element.strip(",()") for element in i] for i in test] # Tar bort ', ' i
 
 test= [[float(element1) for element1 in i] for i in test]
 x2, y2 = zip(*test)
+
+#plt.scatter(x3, y3, c="red")
+#plt.scatter(x1, y1, c="green")
+#plt.scatter(x2, y2, c="black")
+#plt.show()
+
 
 pokemon= [[float(element1) for element1 in i] for i in pokemon] # gör float av pokemon tidigare i koden
 
@@ -117,7 +123,7 @@ def user_input_10near(pokemon):
                     
                     distances.sort()
                     pikachu = 0
-               
+                   
                     for i in distances[:10]: # De 10 närmsta punkterna
                         if i[1] == 1:
                             pikachu += 1
@@ -126,8 +132,8 @@ def user_input_10near(pokemon):
                         print(f"Sample with (width, height): {x, y} classified as Pikachu - 10 -")
                     else:
                         print(f"Sample with (width, height): {x, y} classified as Pichu - 10 -")
-                        return user_coordinate
-                    break
+                    return user_coordinate
+                   
                 else:
                     raise ValueError("Y-koordinaten måste vara 2-3 siffror lång.")
             else:
@@ -140,8 +146,9 @@ def user_input_10near(pokemon):
         
 user_coordinate_10near = user_input_10near(pokemon)
 
-plt.scatter(x, y, c="red")
+plt.scatter(x3, y3, c="red")
 plt.scatter(x1, y1, c="green")
-#plt.scatter(x2, y2, c="black")
-plt.scatter(user_coordinate_10near[0], user_coordinate_10near[1], c="black")
+plt.scatter(x2, y2, c="black")
+plt.scatter(user_coordinate_10near[0], user_coordinate_10near[1], c="grey")
+plt.legend(("Pichu", "Pikachu", "test points", "user input"))
 plt.show()
