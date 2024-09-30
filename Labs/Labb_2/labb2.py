@@ -2,7 +2,7 @@ import numpy as np, matplotlib.pyplot as plt, math
 
 def distance_calc(data, test): # Spara distansen mellan test och data i en lista, returnera en lista.
     distance = []
-    print(distance)
+    #print(distance)
     for test in data:
         for i in test:
             distance = math.sqrt((data[0] - test[0])**2 + (data[1] - test[1])**2)
@@ -38,7 +38,7 @@ test = [[element.strip(",()") for element in i] for i in test] # Tar bort ', ' i
 
 test= [[float(element1) for element1 in i] for i in test]
 x2, y2 = zip(*test)
-print(test)
+
 plt.scatter(x, y, c="red")
 plt.scatter(x1, y1, c="green")
 plt.scatter(x2, y2, c="black")
@@ -53,10 +53,28 @@ def ecd(x, y):
     return distance
 
 dist = [(ecd((a, b),(x,y)),c) for a,b in test for x, y, c in pokemon]
-print(dist)
 
-def pokemon_type():
-    pass
+
+
+def pokemon_type(dist):
+    distances = [(0, 150), (151, 300), (301, 450), (451, 600)]
+    dist1= []
+    for start, end in distances:
+        dist1.append(min(dist[start:end + 1]))
+
+    return dist1
+    
+
+label = pokemon_type(dist)
+print(test)
+
+for i, y in zip(range(len(label)), test):
+    if label[i][1] == 1:
+        print(f"Sample with (width, height): {y} classified as Pikachu")
+    else:
+        print(f"Sample with (width, height): {y} classified as Pichu")
+
+
 
 
 # Rälna ut kortaste distansen med range mellan 1-150
