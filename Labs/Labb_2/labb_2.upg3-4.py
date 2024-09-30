@@ -13,7 +13,8 @@ pichu = [i[:-1] for i in pichu] # Tar bort sista elementet i den inre listan (ta
 pikachu = [i for i in pokemon if i[2] == " 1"]
 pikachu = [i[:-1] for i in pikachu]
 
-pokemon= [[float(element1) for element1 in i] for i in pokemon] #GPT - konverterar str till float
+
+pokemon= [[float(element1) for element1 in i] for i in pokemon] #https://stackoverflow.com/questions/18072759/how-can-i-use-list-comprehensions-to-process-a-nested-list
 pichu = [[float(element) for element in i] for i in pichu] 
 pikachu = [[float(element) for element in i] for i in pikachu] 
 x3, y3 = zip(*pichu) 
@@ -55,7 +56,7 @@ for i, y in zip(range(len(label)), test):
     else:
         print(f"Sample with (width, height): {y} classified as Pichu")
 
-
+      
 def user_input(pokemon): # Användaren lägger in en punkt och får reda på vilken typ
     pass
     while True:
@@ -133,3 +134,6 @@ plt.scatter(x1, y1, c="orange") #
 plt.scatter(user_coordinate_10near[0], user_coordinate_10near[1], c="black", marker="<")
 plt.legend(("Pichu", "Pikachu", "test points", "user input"))
 plt.show()
+
+# Snygga till try, else except
+# Lägg till gränser på punkt input
