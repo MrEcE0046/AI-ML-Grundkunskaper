@@ -41,12 +41,11 @@ def pokemon_type(pokemon, test): # Plockar in 4x150 distanser och tar den minsta
         for q1, q2, label in pokemon:
             distance = math.sqrt((p1 - q1)**2 + (p2 - q2)**2)
             dist.append((distance, label))      
-
     distances = [(0, 150), (151, 300), (301, 450), (451, 600)]# banta ned till distance=range(0,600, 150)?
     dist1= []
     for start, end in distances:
         dist1.append(min(dist[start:end + 1]))
-    
+   
     for i, y in zip(range(len(dist1)), test):
         if dist1[i][1] == 1:
             print(f"Sample with (width, height): {y} classified as Pikachu")
@@ -132,17 +131,54 @@ def random_data(pokemon):
         pichu_data_label.append(pichu_test.pop(0)) # https://stackoverflow.com/questions/9406439/can-i-use-pop-and-append-on-the-same-item-at-the-same-time-in-python
         pikachu_data_label.append(pikachu_test.pop(0)) # Kopierar ett element ur pikachu_test och appendar i pikachu_data samtidigt som den tar bort elementet ur pikachu_test.
     
-    pichu_test = [i[:-1] for i in pichu_test] # Ren testdata utan label
-    pikachu_test = [i[:-1] for i in pikachu_test]
+ 
     pichu_data = [i[:-1] for i in pichu_data_label]
     pikachu_data = [i[:-1] for i in pikachu_data_label]
-    print(pichu_data)
+    pokemon_data_wlabel = pichu_data_label + pikachu_data_label # 100st med label
+    pokemon_test = pichu_test + pikachu_test # 50st utan label  
+  
+    dist = []
+    for p1, p2, true_label in pokemon_test:
+        min_distance = float(10) # Högt dummie värde
+        predicted_label = ""
+        for q1, q2, label in pokemon_data_wlabel:
+            distance = math.sqrt((p1 - q1)**2 + (p2 - q2)**2)
+            if distance < min_distance:
+                min_distance = distance
+                predicted_label = label
+        dist.append((min_distance, predicted_label, true_label))
+
+    tp = 0
+    tn = 0
+    fp = 0
+    fn = 0
+
+    for i in dist:
+        if i[1] == 1 and i[2] == 1:
+            tp += 1
+        elif i[1] == 0 and i[2] == 0:
+            tn += 1
+        elif i[1] == 0 and i[2] == 1:
+            fn += 1
+        elif i[1] == 1 and i[2] == 0:
+            fp += 1
+
+    
+    print(tp)
+    print(tn)
+    print(fp)
+    print(fn)
+
+
+
+
+# Jag vill köra 1 test mot 100 data och och bara spar den kortaste dis 50ggr
 
     plt.scatter(*zip(*pichu_data), c="red")   
     plt.scatter(*zip(*pikachu_data), c="orange") 
     plt.legend(("Pichu", "Pikachu", "test points", "user input"))
-    plt.show()
-    
+    #plt.show()
+
 
 def scatter_plot(input, pichu, pikachu, test,):
     plt.scatter(*zip(*pichu), c="red")   
