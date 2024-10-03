@@ -84,7 +84,6 @@ def user_input(pokemon): # Användaren lägger in en punkt och får reda på vil
             print("An error occurred:", e)
         
 
-
 def user_input_10near(pokemon): # Användaren lägger in en punkt och de tio närmsta avgör vilken typ det är
     while True:
         try:
@@ -119,6 +118,7 @@ def user_input_10near(pokemon): # Användaren lägger in en punkt och de tio nä
         except Exception as e:
             print("An error occurred:", e)
 
+
 def random_data(pokemon):
     pichu_test = [i for i in pokemon if i[2] ==  0.0]
     pikachu_test = [i for i in pokemon if i[2] == 1.0]
@@ -131,14 +131,11 @@ def random_data(pokemon):
         pichu_data_label.append(pichu_test.pop(0)) # https://stackoverflow.com/questions/9406439/can-i-use-pop-and-append-on-the-same-item-at-the-same-time-in-python
         pikachu_data_label.append(pikachu_test.pop(0)) # Kopierar ett element ur pikachu_test och appendar i pikachu_data samtidigt som den tar bort elementet ur pikachu_test.
     
- 
-    pichu_data = [i[:-1] for i in pichu_data_label]
-    pikachu_data = [i[:-1] for i in pikachu_data_label]
     pokemon_data_wlabel = pichu_data_label + pikachu_data_label # 100st med label
-    pokemon_test = pichu_test + pikachu_test # 50st utan label  
+    pokemon_test_wlabel = pichu_test + pikachu_test # 50st utan label  
   
     dist = []
-    for p1, p2, true_label in pokemon_test:
+    for p1, p2, true_label in pokemon_test_wlabel:
         min_distance = float(10) # Högt dummie värde
         predicted_label = ""
         for q1, q2, label in pokemon_data_wlabel:
@@ -162,23 +159,21 @@ def random_data(pokemon):
             fn += 1
         elif i[1] == 1 and i[2] == 0:
             fp += 1
+    acc = (tp+tn)/(tp+tn+fp+fn)
+    return acc
 
+
+def accuracy_plot(acc):
+    print(acc)
+    #Plotta punkterna
+    #Beräkna medelvärde
+    average = sum(acc)/10
+    average = "{:.0%}".format(average)
+    print(f"The average accuracy is {average}")
+    plt.title(f"The avegare is {average}.")
+    plt.plot(acc, marker="o", linestyle="--" )
+    plt.show()
     
-    print(tp)
-    print(tn)
-    print(fp)
-    print(fn)
-
-
-
-
-# Jag vill köra 1 test mot 100 data och och bara spar den kortaste dis 50ggr
-
-    plt.scatter(*zip(*pichu_data), c="red")   
-    plt.scatter(*zip(*pikachu_data), c="orange") 
-    plt.legend(("Pichu", "Pikachu", "test points", "user input"))
-    #plt.show()
-
 
 def scatter_plot(input, pichu, pikachu, test,):
     plt.scatter(*zip(*pichu), c="red")   
@@ -204,7 +199,11 @@ while True:
             user_coordinate_10near = user_input_10near(pokemon)
             plot1 = scatter_plot(user_coordinate_10near, pichu, pikachu, test)
         elif menu == 3:
-            random = random_data(pokemon)
+            accuracy = []
+            for i in range(10):
+                acc = random_data(pokemon)
+                accuracy.append(acc)
+            plot = accuracy_plot(accuracy)
         elif menu == 4:
             print("Quiting")
             break
