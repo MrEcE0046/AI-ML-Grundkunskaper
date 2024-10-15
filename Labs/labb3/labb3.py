@@ -3,6 +3,7 @@ import numpy as np, matplotlib.pyplot as plt, csv
 
 def readfile():
     """ Open file and append to list """
+
     data = []
     with open("unlabelled_data.csv") as f:
         rows = f.readlines()
@@ -61,9 +62,3 @@ data = readfile()
 label_data = categories(data, k, m)
 write_file(label_data)
 plott(label_data, k, m)
-
-
-
-
-
-
