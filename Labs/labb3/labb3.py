@@ -12,7 +12,7 @@ def readfile():
     return data
 
 
-def categories(data, k, m):
+def catagories(data, k, m):
     """ Catagories data according to y=kx+m """
 
     data_label = []
@@ -33,13 +33,16 @@ def write_file(label_data):
         writer.writerows(label_data)
 
 
-def plott(label_data, k, m):
-    """ Plot a line and scatterplot """
+def line(k, m):
+    """ Define a line """
 
-    x = [-5,-4,-3,-2,-1,0,1,2,3,4,5]
-    y = list()
-    for xval in x:
-        y.append(k*xval + m)
+    x = np.linspace(-5, 5, 10) 
+    y = k * x + m
+    return x, y
+
+
+def plott(label_data, x, y):
+    """ Plot a line and scatterplot """
 
     zeroes = [i for i in label_data if i[2] ==  0] # Separerar 1/0 från stora listan, bara för att plotta
     ones = [i for i in label_data if i[2] ==  1]
@@ -59,6 +62,7 @@ k = -1.5
 m = 0
 
 data = readfile()
-label_data = categories(data, k, m)
+label_data = catagories(data, k, m)
 write_file(label_data)
-plott(label_data, k, m)
+x, y = line(k, m)
+plott(label_data, x, y)
