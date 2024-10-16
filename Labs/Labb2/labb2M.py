@@ -1,14 +1,17 @@
 import numpy as np, matplotlib.pyplot as plt, math, random as rnd
 
+# Ett bättre alternativ för default värden vore
+# def datapoints(file="datapoints.txt")
 path = "datapoints.txt"
 def datapoints(file):
     pokemon = []
     with open(file) as file:
         next(file)
         for line in file:
+            # Hur ser x ut här? Det är en lista med tre element! Dessa går att omvandla direkt till tal med float()
             x = line.strip().split(",")
             pokemon.append(x)
-
+    # Nästlade listor gör saker svårare än de behöver vara....
     pichu = [i for i in pokemon if i[2] == " 0"] # Sammlar alla pichu i en egen lista (alla som slutar på 0)
     pichu = [i[:-1] for i in pichu] # Tar bort sista elementet i den inre listan (tar bort alla nollor)
     pikachu = [i for i in pokemon if i[2] == " 1"]
@@ -19,6 +22,8 @@ def datapoints(file):
     pikachu = [[float(element) for element in i] for i in pikachu] 
     return pokemon, pichu, pikachu
 
+# Samma som ovan, ett bättre alternativ för default värden är 
+# def testpoints(test_points="testpoints.txt"):
 test_points = "testpoints.txt"
 def testpoints(test_points):
     test = []
@@ -28,13 +33,17 @@ def testpoints(test_points):
         for line in test_points:
             t = line.split()
             test.append(t)
-
+    
+    # nästlade listor är onödigt komplicerat i detta fall
     test = [i[1:] for i in test] # Tar bort index i början för alla inre listor
     test = [[element.strip(",()") for element in i] for i in test] # Tar bort ', ' i dem inre listorna
     test= [[float(element1) for element1 in i] for i in test]
     return test
 
-
+# Förstår inte riktigt vad den här funktionen gör. Någon sorts partitionering? 
+# Att dela in i intervall verkar krånligt och onödigt. Det räcker att jämföra punkterna direkt. 
+# Inte heller en bra idé att begränsa användingen med hårdkodade intervall. Funktionen borde också ta emot 
+# en parameter som bestämmer hur många av de närmsta punkterna som skall användas.
 def pokemon_type(pokemon, test): # Plockar in 4x150 distanser och tar den minsta för varje testpunkt. 
     dist = []
     for p1, p2 in test:
@@ -52,7 +61,8 @@ def pokemon_type(pokemon, test): # Plockar in 4x150 distanser och tar den minsta
         else:
             print(f"Sample with (width, height): {y} classified as Pichu")
 
-
+# Följande två funktioner borde vara en funktion med en parameter som avgör hur många närmsta punkter
+# som skall användas; lämpligtvis vore detta klassifikationsfunktionen och inte inmatningsfunktionen.
 def user_input(pokemon): # Användaren lägger in en punkt och får reda på vilken typ
     while True:
         try:
@@ -118,15 +128,16 @@ def user_input_10near(pokemon): # Användaren lägger in en punkt och de tio nä
         except Exception as e:
             print("An error occurred:", e)
 
-
+# Denna funktion är inte bra namgiven. Den räknar ut accuracy för ett hårdkodat fall och ger inte tillbaka slumpmässig data.
 def random_data(pokemon):
+    # Ett bättre alternativ hade varit rnd.shuffle(pokemon) innan nedanstående, så hade följande tio rader kunnat tas bort
     pichu_test = [i for i in pokemon if i[2] ==  0.0]
     pikachu_test = [i for i in pokemon if i[2] == 1.0]
     pichu_data_label = []
     pikachu_data_label = []
     rnd.shuffle(pichu_test)
     rnd.shuffle(pikachu_test)
-    
+    # Denna loop är ganska märklig, skyfflar bara om element. 
     for i in range(50):
         pichu_data_label.append(pichu_test.pop(0)) # https://stackoverflow.com/questions/9406439/can-i-use-pop-and-append-on-the-same-item-at-the-same-time-in-python
         pikachu_data_label.append(pikachu_test.pop(0)) # Kopierar ett element ur pikachu_test och appendar i pikachu_data samtidigt som den tar bort elementet ur pikachu_test.
@@ -134,9 +145,12 @@ def random_data(pokemon):
     pokemon_data_wlabel = pichu_data_label + pikachu_data_label # 100st med label
     pokemon_test_wlabel = pichu_test + pikachu_test # 50st utan label  
   
+    # Denna del försöker göra alldeles för mycket på en gång. Borde delas upp i tydligare steg som även går att använda
+    # i andra delar av programmet. En "classify" funktion som tog emot två koordinater och jämför med k stycken närmsta
+    # punkterna hade gjort koden tydligare och enklare och hade kunnat användas i alla uppgifterna.
     dist = []
     for p1, p2, true_label in pokemon_test_wlabel:
-        min_distance = float(10) # Högt dummie värde
+        min_distance = float(10) # Högt dummie värde 
         predicted_label = ""
         for q1, q2, label in pokemon_data_wlabel:
             distance = math.sqrt((p1 - q1)**2 + (p2 - q2)**2)
@@ -150,6 +164,8 @@ def random_data(pokemon):
     fp = 0
     fn = 0
 
+    # Detta blev onödigt komplicerat. Mycket lättare att räkna hur många som är samma i 
+    # 'facit' jämfört med dina klassificeringar istället för detta flerstegs-förfarande.
     for i in dist:
         if i[1] == 1 and i[2] == 1:
             tp += 1
