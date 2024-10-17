@@ -43,17 +43,19 @@ def line(k, m):
 
 def plott(label_data, x, y):
     """ Plot a line and scatterplot """
+    
+    label_data=np.array(label_data,dtype=float)
+    x1 = label_data[:, 0]
+    y1 = label_data[:, 1]
+    label = label_data[:, 2]
 
-    zeroes = [i for i in label_data if i[2] ==  0] # Separerar 1/0 från stora listan, bara för att plotta
-    ones = [i for i in label_data if i[2] ==  1]
-
-    plt.plot(x,y,"r")
-    plt.scatter(np.array(ones)[:, 0], np.array(ones)[:, 1], c="blue")
-    plt.scatter(np.array(zeroes)[:, 0], np.array(zeroes)[:, 1], c= "green")
-    plt.title(f"{len(zeroes)} of label-0 | {len(ones)} of label-1")
+    plt.plot(x,y,"r", label=f"y= {k}x {m}")
+    plt.scatter(x1[label==0],y1[label==0], c="blue", label="Label 0")
+    plt.scatter(x1[label==1],y1[label==1], c="red", label="Label 1")
+    plt.title(f"{np.sum(label==0)} of label-0 | {np.sum(label==1)} of label-1")
     plt.xlabel("X-axle")
     plt.ylabel("Y-axle")
-    plt.legend((f"y= {k}x {m}", "Label 1", "Label 0"))
+    plt.legend()
     plt.grid()
     plt.show()
 
