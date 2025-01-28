@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.stats as stats
 
 class LinearRegression: 
 
@@ -13,12 +14,19 @@ class LinearRegression:
     @property
     def n(self):
         return self.Y.shape[0]
+    
     @property
     def d(self):
         return len(self.b)-1
     
-    def SSE (self):
+    def SSE(self):
         return np.sum(np.square(self.Y - (self.X @ self.b)))
+    
+    def SSR(self):
+        return np.sum(((self.X @ self.b) - np.mean(self.Y))**2)
+    
+    def SST(self):
+        return np.sum((self.Y - np.mean(self.Y))**2)
 
     def var(self):
         # A function or method to calculate the variance.
@@ -33,11 +41,15 @@ class LinearRegression:
 
     def significance_regression(self):
         # A function or method to calculate the significance of the regression.
-        pass
+        S = np.sqrt(self.var())
+        sig_statistics = (self.SSR() / self.d)/S
+        p_significance = stats.f.sf(sig_statistics, self.d, self.n-self.d-1)
+        return p_significance
 
     def relevance(self):
         # A function or method that reports the relevance of the regression (R2).
-        pass
+        R2 = self.SSR() / self.SST()
+        return R2
 
 
 
