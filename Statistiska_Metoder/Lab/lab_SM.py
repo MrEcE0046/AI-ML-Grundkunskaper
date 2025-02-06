@@ -2,23 +2,23 @@ import numpy as np
 import scipy.stats as stats
 
 class LinearRegression: 
-
     def __init__(self, X, Y):
         self.X = X
         self.Y = Y
-   
-        
+
     @property
     def confidence_level(self):
         return self._confidence_level
 
-    @confidence_level.setter
-    def confidence_level(self, confidence_level):
-        self._confidence_level = confidence_level
+    @property
+    def confidence_level(self):
+        conf_level = self.relevance()
+        return conf_level
 
     @property
     def alpha(self):
         return 1 - self.confidence_level
+    
     @property
     def b(self):
         return np.linalg.pinv(self.X.T @ self.X) @ self.X.T @ self.Y
@@ -30,10 +30,6 @@ class LinearRegression:
     @property
     def d(self):
         return len(self.b)-1
-    
-    @property
-    def confidence_level(self):
-        pass
     
     def SSE(self):
         return np.sum(np.square(self.Y - (self.X @ self.b)))
@@ -51,7 +47,6 @@ class LinearRegression:
 
     def std_dev(self): # = S
         # A function or method to calculate the standard deviation.
-        # return np.std(self.Y)
         return np.sqrt(self.var())
 
     def significance_regression(self):
@@ -88,52 +83,3 @@ class LinearRegression:
             higher = self.b[i] + margin_of_error
             ci.append((lower, higher))
         return ci
-
-
-    # def confidence_interval(self):
-        # self.confidence_level = 0.95
-        # sample_mean = np.mean(self.X)
-        # sample_std = np.std(self.X, ddof=1)
-        # t_critical = stats.norm.ppf(1 - self.alpha / 2)
-        # # t_critical = stats.t.ppf((self.alpha / 2), self.n - self.d - 1)
-        # margin_of_error = t_critical * (sample_std / np.sqrt(self.n))
-
-        # # confidence_interval = (sample_mean - margin_of_error, sample_mean + margin_of_error)
-
-        # ci = []
-        # for i in range(len(self.b)):
-        #     lower = sample_mean[i] - margin_of_error[i]
-        #     higher = sample_mean[i] + margin_of_error[i]
-        #     ci.append((lower, higher))
-        # return ci
-
-
-
-
-
-
-
-
-
-
-
-       # def __init(self, ls):
-    #     assert len(ls) == 2
-    #     self.real = self.imag = ls
-
-    # def __inti__(self, real, imag):
-    #     self.real = real
-    #     self.imag = imag 
-
-    # def __repr__(self):
-    #     return f"{repr(self.real)} + {repr(self.imag)}i"
-    
-    # def __add__(self, other):
-    #     return complex(self.real + other.real, self.imag + other.imag)
-    
-    # def fit(X, y):
-    #     b = np.linalg.inv(X.T.dot(X)).dot(X.T).dot(y)
-    #     return b
-
-    # Aproperty "d" that contains the number of features/parameters/dimensions of the model.
-    # Aproperty n that contains the size of the sample.
