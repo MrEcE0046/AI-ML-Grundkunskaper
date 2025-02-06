@@ -80,27 +80,32 @@ class LinearRegression:
         return [(i, j, stats.pearsonr(X[:,i], X[:,j])[0]) for i in range(X.shape[1]) for j in range(i + 1, X.shape[1])]
 
     def confidence_interval(self):
-        # self.confidence_level = 0.95
-        sample_mean = np.mean(self.X)
-        sample_std = np.std(self.X, ddof=1)
-        t_critical = stats.norm.ppf(1 - self.alpha / 2)
-        # t_critical = stats.t.ppf((self.alpha / 2), self.n - self.d - 1)
-        margin_of_error = t_critical * (sample_std / np.sqrt(self.n))
-
-        # confidence_interval = (sample_mean - margin_of_error, sample_mean + margin_of_error)
-
+        t_critical = stats.t.ppf(1 - self.alpha / 2, self.n - self.d - 1)
         ci = []
         for i in range(len(self.b)):
-            lower = sample_mean[i] - margin_of_error[i]
-            higher = sample_mean[i] + margin_of_error[i]
+            margin_of_error = t_critical * (self.std_dev() * np.sqrt(np.linalg.pinv(self.X.T @ self.X)[i, i]))
+            lower = self.b[i] - margin_of_error
+            higher = self.b[i] + margin_of_error
             ci.append((lower, higher))
         return ci
 
 
+    # def confidence_interval(self):
+        # self.confidence_level = 0.95
+        # sample_mean = np.mean(self.X)
+        # sample_std = np.std(self.X, ddof=1)
+        # t_critical = stats.norm.ppf(1 - self.alpha / 2)
+        # # t_critical = stats.t.ppf((self.alpha / 2), self.n - self.d - 1)
+        # margin_of_error = t_critical * (sample_std / np.sqrt(self.n))
 
+        # # confidence_interval = (sample_mean - margin_of_error, sample_mean + margin_of_error)
 
-
-
+        # ci = []
+        # for i in range(len(self.b)):
+        #     lower = sample_mean[i] - margin_of_error[i]
+        #     higher = sample_mean[i] + margin_of_error[i]
+        #     ci.append((lower, higher))
+        # return ci
 
 
 
