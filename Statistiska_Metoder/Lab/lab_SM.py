@@ -20,7 +20,7 @@ class LinearRegression:
         return 1 - self.confidence_level
     
     @property
-    def b(self):
+    def B(self):
         return np.linalg.pinv(self.X.T @ self.X) @ self.X.T @ self.Y
 
     @property
@@ -29,10 +29,10 @@ class LinearRegression:
     
     @property
     def d(self):
-        return len(self.b)-1
+        return len(self.B)-1
     
     def SSE(self):
-        return np.sum(np.square(self.Y - (self.X @ self.b)))
+        return np.sum(np.square(self.Y - (self.X @ self.B)))
     
     def SSR(self):
         return self.Syy() - self.SSE()
@@ -62,10 +62,10 @@ class LinearRegression:
     def significance(self):
         c = np.linalg.pinv(self.X.T@self.X)*self.var()
         p_value_list = []
-        for i in range(len(self.b)):
+        for i in range(len(self.B)):
             if i == 0:
                 continue
-            sig_statistic = self.b[i] / (self.std_dev()*np.sqrt(c[i,i]))
+            sig_statistic = self.B[i] / (self.std_dev()*np.sqrt(c[i,i]))
             p_value = 2*min(stats.t.cdf(sig_statistic, self.n-self.d-1), stats.t.sf(sig_statistic, self.n-self.d-1))
             p_value_list.append(p_value)
         return p_value_list
@@ -77,9 +77,9 @@ class LinearRegression:
     def confidence_interval(self):
         t_critical = stats.t.ppf(1 - self.alpha / 2, self.n - self.d - 1)
         ci = []
-        for i in range(len(self.b)):
+        for i in range(len(self.B)):
             margin_of_error = t_critical * (self.std_dev() * np.sqrt(np.linalg.pinv(self.X.T @ self.X)[i, i]))
-            lower = self.b[i] - margin_of_error
-            higher = self.b[i] + margin_of_error
+            lower = self.B[i] - margin_of_error
+            higher = self.B[i] + margin_of_error
             ci.append((lower, higher))
         return ci
